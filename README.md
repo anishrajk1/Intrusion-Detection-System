@@ -89,8 +89,8 @@ real time on a Flask-powered dashboard with live charts.
 
 ## Authors
 
-* Your Name
-  [@your_github_handle](https://github.com/your_github_handle)
+* Anish Rajkumar
+  [@anishrajk1](https://github.com/anishrajk1)
 
 ## Version History
 
@@ -153,3 +153,7 @@ logic.
   the scan detector, cuts down noise from normal retries.
 - **Why Scapy?** Raw access to packet layers without hand-parsing IP/TCP
   headers, and it's widely used in real-world security tooling.
+
+# Intrusion-Detection-System
+
+A lightweight network intrusion detection system in Python that detects port scans, brute-force attempts, and sensitive port access in real time, with a live Flask dashboard.
