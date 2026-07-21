@@ -76,7 +76,7 @@ real time on a Flask-powered dashboard with live charts.
 
 ## Help
 
-* If `capture.py` fails to start, it's almost always a permissions issue —
+* If `capture.py` fails to start, it's almost always a permissions issue,
   run with `sudo` (Linux/macOS) or as Administrator (Windows), or just use
   `--no-capture` mode with the simulator instead.
 * If the dashboard shows no data, confirm the Flask server is actually
@@ -87,7 +87,7 @@ real time on a Flask-powered dashboard with live charts.
   curl -X POST http://localhost:5000/api/clear
   ```
 
-## Authors
+## Author
 
 * Anish Rajkumar
   [@anishrajk1](https://github.com/anishrajk1)
