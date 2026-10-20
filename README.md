@@ -109,51 +109,6 @@ This project is licensed under the MIT License - see the LICENSE.md file for det
 
 ---
 
-## How It Works (technical deep dive)
-
-```
- Live Traffic (Scapy)  --->  Detection Engine  --->  SQLite  --->  Flask Dashboard
-  or simulator.py             (3 detectors)          (events.db)   (live charts)
-```
-
-1. **Capture** — `capture.py` sniffs live TCP traffic using Scapy and pulls
-   out source IP, destination IP, and destination port for every packet.
-2. **Detect** — `detector.py` runs three independent, stateful detectors
-   against a sliding time window of recent activity:
-   - **Port scan detector** — flags a source IP that touches an unusually
-     high number of distinct ports on one target within a short window
-     (the signature of an Nmap-style scan).
-   - **Brute force detector** — flags a source IP that repeatedly hits the
-     *same* port on one target (the signature of a login-guessing attack
-     against SSH, RDP, etc).
-   - **Sensitive port detector** — flags first contact with high-value
-     ports (SSH, RDP, Telnet, databases) even before a pattern emerges.
-3. **Store** — every detection is logged to SQLite with a timestamp,
-   severity, and human-readable description.
-4. **Visualize** — `app.py` serves a live dashboard (auto-refreshing every
-   2s) showing alert counts, a severity breakdown chart, an events-over-time
-   chart, and a live alert feed table.
-
-Both statistical detectors use a **sliding window + threshold** approach:
-every observed connection is timestamped and stored per source; entries
-older than the configured window get dropped on each new packet, so memory
-stays bounded. If enough qualifying events land inside the window, an alert
-fires — with a cooldown so one ongoing attack doesn't spam duplicate
-alerts. All thresholds live in `config.py`, kept separate from detection
-logic.
-
-## Interview Talking Points
-
-- **Why a sliding window instead of a fixed counter?** A fixed counter
-  never resets and eventually flags everyone; a sliding window only counts
-  *recent* activity, matching how real attacks look — bursty, not spread
-  evenly over hours.
-- **How did you reduce false positives?** The alert cooldown, plus
-  requiring a minimum number of *distinct* ports (not just packets) for
-  the scan detector, cuts down noise from normal retries.
-- **Why Scapy?** Raw access to packet layers without hand-parsing IP/TCP
-  headers, and it's widely used in real-world security tooling.
-
 # Intrusion-Detection-System
 
 A lightweight network intrusion detection system in Python that detects port scans, brute-force attempts, and sensitive port access in real time, with a live Flask dashboard.
